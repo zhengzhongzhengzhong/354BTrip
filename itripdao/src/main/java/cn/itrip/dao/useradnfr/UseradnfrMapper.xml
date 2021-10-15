@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itrip.dao.useradnfr.UseradnfrMapper">
+
+    <select id="getUseradnfrById" resultType="cn.itrip.pojo.Useradnfr" >
+        select
+                id as id,
+                RID as RID,
+                FID as FID
+        from useradnfr
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="id != null">
+                and id=#{id}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getUseradnfrListByMap" resultType="cn.itrip.pojo.Useradnfr" parameterType="java.util.Map">
+        select
+                id as id,
+                RID as RID,
+                FID as FID
+        from useradnfr
+        <trim prefix="where" prefixOverrides="and | or">
+                    <if test="id != null and id!=''">
+                        and id=#{id}
+                    </if>
+                    <if test="RID != null and RID!=''">
+                        and RID=#{RID}
+                    </if>
+        </trim>
+         order by creationDate desc
+        <if test="beginPos != null and beginPos!='' and pageSize != null  and pageSize !='' ">
+            limit #{beginPos},#{pageSize}
+        </if>
+    </select>
+
+    <select id="getUseradnfrCountByMap" resultType="Integer"  parameterType="java.util.Map">
+        select count(*) from useradnfr
+        <trim prefix="where" prefixOverrides="and | or">
+                <if test="id != null and id!=''">
+                    and id=#{id}
+                </if>
+                <if test="RID != null and RID!=''">
+                    and RID=#{RID}
+                </if>
+                <if test="FID != null and FID!=''">
+                    and FID=#{FID}
+                </if>
+        </trim>
+    </select>
+
+    <insert id="insertUseradnfr" parameterType="cn.itrip.pojo.Useradnfr">
+        insert into useradnfr(
+                        RID,
+                        FID)
+        values(
+                     #{RID},
+                    #{FID})
+    </insert>
+
+    <update id="updateUseradnfr" parameterType="cn.itrip.pojo.Useradnfr">
+        update useradnfr
+        <trim prefix="set" suffixOverrides="," suffix="where id=#{id}">
+                    <if test="id != null and id!=''">
+                        id=#{id},
+                    </if>
+                    <if test="RID != null and RID!=''">
+                        RID=#{RID},
+                    </if>
+                    <if test="FID != null and FID!=''">
+                        FID=#{FID}
+                    </if>
+        </trim>
+    </update>
+
+    <delete id="deleteUseradnfrById" parameterType="Long">
+        delete from useradnfr where id = #{id}
+    </delete>
+</mapper>
